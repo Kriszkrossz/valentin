@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leszel a Valentinom? 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    margin-top: 18vh;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+h1 { font-size: 2.3em; }
+p { font-size: 1.2em; }
+
+button {
+    font-size: 1.2em;
+    padding: 15px 25px;
+    margin: 15px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background-color: #ff4d6d;
+    color: white;
+    box-shadow: 0 0 20px white;
+}
+
+#noBtn {
+    background-color: white;
+    color: #ff4d6d;
+}
+
+.message {
+    margin-top: 25px;
+    font-size: 1.2em;
+    min-height: 40px;
+}
+
+/* Háttér szívek */
+.hearts-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bg-heart {
+    position: absolute;
+    bottom: -20px;
+    font-size: 18px;
+    animation: floatUp linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); }
+    to { transform: translateY(-110vh); }
+}
+
+/* Szív robbanás */
+.burst-heart {
+    position: fixed;
+    font-size: 22px;
+    animation: burst 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 3;
+}
+
+@keyframes burst {
+    to {
+        transform: translate(var(--x), var(--y)) scale(1.8);
+        opacity: 0;
+    }
+}
+
+/* IGEN utáni animációk */
+.celebrate-heart {
+    position: fixed;
+    font-size: 26px;
+    animation: celebrate 2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes celebrate {
+    0% { transform: scale(0.5) translateY(0); opacity: 1; }
+    100% { transform: scale(1.8) translateY(-200px); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="container">
+    <h1>Leszel a Valentinom? 💘</h1>
+    <p>Ígérem sok puszi, ölelés és csoki jár vele 🥰</p>
+
+    <button id="yesBtn">IGEN 💖</button>
+    <button id="noBtn">NEM 💔</button>
+
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+const heartsBg = document.getElementById("heartsBg");
+
+const funnyMessages = [
+    "Összetöröd a szívem 💔🥺",
+    "Ezt nem gondolhatod komolyan 😭",
+    "A romantika most sír egy sarokban 🥲",
+    "Nélküled fogok finomat enni… egyedül 🍫😢",
+    "Akkor most extra ölelés jár büntiből 🤗",
+    "Lehet, hogy ma a kanapén alszom… 😆",
+    "Na jó… most már tényleg az IGENT kellene 😌"
+];
+
+let noClicks = 0;
+
+noBtn.addEventListener("click", () => {
+    message.textContent = funnyMessages[noClicks % funnyMessages.length];
+    noClicks++;
+    yesBtn.style.transform = `scale(${1 + noClicks * 0.12})`;
+    heartBurst();
+});
+
+yesBtn.addEventListener("click", () => {
+    startCelebration();
+});
+
+/* Háttér szívek */
+function createBgHeart() {
+    const heart = document.createElement("div");
+    heart.className = "bg-heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 4 + 4) + "s";
+    heartsBg.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+}
+setInterval(createBgHeart, 200);
+
+/* Szív robbanás */
+function heartBurst() {
+    for (let i = 0; i < 14; i++) {
+        const heart = document.createElement("div");
+        heart.className = "burst-heart";
+        heart.innerHTML = "💔";
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+        heart.style.setProperty('--x', (Math.random() * 240 - 120) + "px");
+        heart.style.setProperty('--y', (Math.random() * 240 - 120) + "px");
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1000);
+    }
+}
+
+/* IGEN UTÁNI NAGY ANIMÁCIÓ */
+function startCelebration() {
+    document.body.innerHTML = `
+        <div style="margin-top:22vh;">
+            <h1>IGEEEEEN!!! 💖💖💖</h1>
+            <p>Tudtam hogy igent mondasz! 🥰</p>
+            <p>Boldog Valentin-napot szerelmem! 💋</p>
+        </div>
+    `;
+
+    setInterval(() => {
+        for (let i = 0; i < 8; i++) {
+            const heart = document.createElement("div");
+            heart.className = "celebrate-heart";
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "70vh";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2000);
+        }
+    }, 400);
+}
+</script>
+
+</body>
+</html>
